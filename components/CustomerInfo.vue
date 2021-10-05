@@ -60,7 +60,7 @@
                                 </select> -->
                                 <label for="detail" class="form-label">Room Detail</label>
                                 <input type="text" class="form-control" id="detail" v-model="roomupdate.detail">
-                                 <button class="btn btn-primary mt-3" style="float:right" type="submit" @click="update()">Rent</button>
+                                 <button class="btn btn-primary mt-3" style="float:right" type="submit" @click="update(item)">Rent</button>
                                   <button class="btn btn-secondary mt-3 me-3" style="float:right"  @click="hideModal()">Cancel</button>
                                 <!-- <div class="mb-3">
                                     <label for="formFile" class="form-label">Default file input example</label>
@@ -77,12 +77,14 @@
                                 </center>
                             </b-modal>
 
-                            <b-button v-b-modal.modal-7 class="btn btn-light" ><fa icon="trash" style="color:red"/></b-button>
+                            <b-button v-b-modal.modal-7 class="btn btn-light" ><fa iycon="trash" style="color:red"/></b-button>
 
-                            <b-modal id="modal-7" title="Delete" ok-title="delete" hide-header-close>
+                            <b-modal id="modal-7" title="Delete" ok-title="delete" hide-header-close hide-footer>
                                 <center>
                                     <h3>Are you sure?</h3>
                                     <p>you want to delete this room</p>
+                                    <button class="btn btn-primary mt-3" style="float:right" type="submit" @click="deleteRoom(item.id)">Rent</button>
+                                    <button class="btn btn-secondary mt-3 me-3" style="float:right"  @click="hideModal()">Cancel</button>
                                 </center>
                             </b-modal>
 
@@ -93,6 +95,7 @@
                     </tbody>
                 </table>
             </div>
+
 
 
         </div>
@@ -120,10 +123,27 @@ export default {
       this.message=''
       this.$refs['my-modal'].hide()
     },
-    update() {
-      this.$axios.put('http://localhost:8000/api/updateroom', this.roomupdate).then(res=>{
-        console.log(res.data);
+    update(item) {
+      console.log(item);
+      this.$axios.put('http://localhost:8000/api/updateroom/'+item.id, this.roomupdate).then(res=>{
+        console.log("update res",res.data);
+        let ind = this.listCusRent.findIndex((e =>e.id = item.id));
+        this.listCusRent[ind].roomname=res.data.room.roomname;
+        this.listCusRent[ind].price=res.data.room.price;
+        this.listCusRent[ind].detail=res.data.room.detail;
+        this.listCusRent[ind].
         this.hideModal();
+      }).catch(err=>{
+        console.log(err);
+      })
+    },
+    deleteRoom(room){
+      this.$axios.delete('http://localhost:8000/api/deleteroom/'+room).then(res=>{
+        console.log(res.data);
+        let ind = this.listCusRent.findIndex((e =>e.id = room));
+        this.listCusRent.slice(ind, 1);
+
+        this.hideModal()
       }).catch(err=>{
         console.log(err);
       })
