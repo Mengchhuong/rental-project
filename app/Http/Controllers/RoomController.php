@@ -51,13 +51,13 @@ class RoomController extends Controller
     }
     public function updateRoom(Request $request,$id){
 
-
+        // return $request->all();
         $rentId= DB::table('rents')
         ->join('rooms','rooms.id','=','rents.room_id')
-        ->where('room_id','=',$id);
-        // ->get();
-        //->select('rents.id');
-        return $rentId;
+        ->where('room_id','=',$id)
+        ->get();
+
+        // return $rentId[0]->room_id;
         // return $request->all();
         $room=Room::find($id);
         $room->update([
@@ -67,7 +67,7 @@ class RoomController extends Controller
         ]);
         // return $rent;
         // $room = Room::find($id);
-        $rent=Rent::find($rentId);
+        $rent=Rent::find($rentId[0]->room_id);
         $rent->update([
             'cusname'=>$request->cusname,
             'cusphone'=>$request->cusphone,

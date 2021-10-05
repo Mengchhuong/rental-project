@@ -31,7 +31,7 @@ Route::post('/login',[AuthController::class,'login']);
 
 Route::post('/createroom',[RoomController::class,'createRoom']);
 Route::get('/listroom',[RoomController::class,'listRoom']);
-Route::delete('/deleteroom',[RoomController::class,'deleteRoom']);
+Route::delete('/deleteroom/{id}',[RoomController::class,'deleteRoom']);
 Route::put('/updateroom/{id}',[RoomController::class,'updateRoom']);
 // Route::get('/products/search/{name}',[ProductController::class,'search']);
 // Route::get('/products/{id}',[ProductController::class,'show']);

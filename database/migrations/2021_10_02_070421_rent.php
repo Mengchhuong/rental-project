@@ -22,6 +22,7 @@ class Rent extends Migration
             $table->string('telephone');
             $table->date('rentdate');
             $table->timestamps();
+            
             $table->foreign('room_id')
                 ->references('id')
                 ->on('rooms')
