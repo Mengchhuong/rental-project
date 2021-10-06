@@ -121,8 +121,14 @@ export default {
       this.$refs['my-modal'].hide()
     },
     update() {
-      this.$axios.put('http://localhost:8000/api/updateroom', this.roomupdate).then(res=>{
+      this.$axios.put('http://localhost:8000/api/updateroom'+item.id, this.roomupdate).then(res=>{
         console.log(res.data);
+        let ind = this.listCusRent.findIndex((e =>e.id = item.id));
+        this.listCusRent[ind].roomname= res.data.room.roomname;
+        this.listCusRent[ind].price= res.data.room.price;
+        this.listCusRent[ind].detail= res.data.room.detail;
+        this.listCusRent[ind].cusname= res.data.room.cusname;
+
         this.hideModal();
       }).catch(err=>{
         console.log(err);
