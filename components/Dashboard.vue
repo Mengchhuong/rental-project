@@ -109,7 +109,7 @@
     </form>
 
     <div class="container mt-3 mb-5" v-if="status == false" >
-      <div  v-for="item in roomData" :key="item">
+      <div  v-for="item in roomData" :key="item.id">
         <b-tabs content-class="mt-3" style="margin-bottom:3%">
             <b-tab title="Room" active>
 
@@ -256,6 +256,7 @@ export default {
       formData.append('price',this.room.price)
       formData.append('detail',this.room.detail)
       console.log(formData.get("files[]"))
+
       // const config ={
       //   headers:{
       //           'Content-Type': "application/json",
@@ -271,9 +272,12 @@ export default {
       // })
       fetch('http://localhost:8000/api/createroom',{
         method:"POST",
-
         body:formData
-      })
+
+      }).then(res=>res.json())
+      .then(res=>{
+        this.roomData.push(res)
+        })
       this.hideModal();
     },
 
