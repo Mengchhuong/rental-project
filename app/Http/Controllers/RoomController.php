@@ -49,15 +49,22 @@ class RoomController extends Controller
         $room->delete();
         return response()->json($room);
     }
+    public function resetStatus(Request $request,$id){
+        $roomStatus = Room::find($id);
+        $roomStatus->update([
+            'status'=>$request->status,
+        ]);
+        return response()->json($roomStatus);
+    }
     public function updateRoom(Request $request,$id){
 
 
         $rentId= DB::table('rents')
         ->join('rooms','rooms.id','=','rents.room_id')
-        ->where('room_id','=',$id);
-        // ->get();
+        ->where('room_id','=',$id)
+        ->get();
         //->select('rents.id');
-        return $rentId;
+        // return $rentId;
         // return $request->all();
         $room=Room::find($id);
         $room->update([
@@ -67,10 +74,10 @@ class RoomController extends Controller
         ]);
         // return $rent;
         // $room = Room::find($id);
-        $rent=Rent::find($rentId);
+        $rent=Rent::find($rentId[0]->room_id);
         $rent->update([
             'cusname'=>$request->cusname,
-            'cusphone'=>$request->cusphone,
+            'telephone'=>$request->telephone,
             'rentdate'=>$request->rentdate,
 
         ]);
